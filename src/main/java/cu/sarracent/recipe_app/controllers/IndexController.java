@@ -1,14 +1,34 @@
 package cu.sarracent.recipe_app.controllers;
 
+import cu.sarracent.recipe_app.domain.Category;
+import cu.sarracent.recipe_app.domain.UnitOfMeasure;
+import cu.sarracent.recipe_app.repositories.CategoryRepository;
+import cu.sarracent.recipe_app.repositories.UnitOfMeasureRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Optional;
 
 @Controller
 public class IndexController {
 
+    private CategoryRepository categoryRepository;
+    private UnitOfMeasureRepository unitOfMeasureRepository;
+
+    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+        this.categoryRepository = categoryRepository;
+        this.unitOfMeasureRepository = unitOfMeasureRepository;
+    }
+
     @RequestMapping({"", "/", "/index"})
     public String getIndexPage(){
-        System.out.println("Algun mensaje que mandar... 1234555ffff fffddddd dsdasdsadsa");
+
+        Optional<Category> categoryOptional = categoryRepository.findByDescription("American");
+        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
+
+        System.out.println("Cat ID is: " + categoryOptional.get().getId());
+        System.out.println("UOM ID is: " + unitOfMeasureOptional.get().getId());
+
         return "index";
     }
 }
